@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
+import argparse
 
-def stack_videos(video1_path, video2_path, output_path):
+def main(video1_path, video2_path, output_path):
     """Stacks two videos horizontally."""
 
     cap1 = cv2.VideoCapture(video1_path)
@@ -24,7 +25,7 @@ def stack_videos(video1_path, video2_path, output_path):
 
     # Create output video writer
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter(output_path, fourcc, 5, (width1, height1 + height2))
+    out = cv2.VideoWriter(output_path, fourcc, 10, (width1, height1 + height2))
 
     while True:
         ret1, frame1 = cap1.read()
@@ -44,8 +45,9 @@ def stack_videos(video1_path, video2_path, output_path):
     out.release()
 
 if __name__ == "__main__":
-    video1_path = "input/Bounds_30fps.mov"
-    video2_path = "output/1/output.mp4"
-    output_path = "stack.mp4"
-
-    stack_videos(video1_path, video2_path, output_path)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("vid1")
+    parser.add_argument("vid2")
+    parser.add_argument("out")
+    args = parser.parse_args()
+    main(args.vid1, args.vid2, args.out)
